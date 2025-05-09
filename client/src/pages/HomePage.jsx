@@ -921,52 +921,6 @@ const Home = () => {
           </div>
         </div>
       </motion.section>
-      
-      {/* Newsletter Section */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <motion.h3 
-              className="text-3xl font-bold text-gray-900 dark:text-white mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              Stay Updated
-            </motion.h3>
-            <motion.p 
-              className="text-lg text-gray-600 dark:text-gray-300 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Subscribe to our newsletter for seasonal updates, exclusive offers, and mango recipes.
-            </motion.p>
-            <motion.div 
-              className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <input 
-                type="email" 
-                placeholder="Your email address" 
-                className="px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 flex-grow"
-              />
-              <motion.button 
-                className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Subscribe
-              </motion.button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };

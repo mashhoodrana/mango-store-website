@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import MangoTypes from './pages/MangoTypes';
 import OrderPage from './pages/OrderPage';
@@ -22,6 +23,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
+        <Footer />
       </Router>
     </CartProvider>
   );
