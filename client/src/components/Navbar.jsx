@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   // Initialize darkMode from localStorage or default to false
@@ -46,7 +48,10 @@ const Navbar = () => {
     setIsOpen(prevState => !prevState);
   }, []);
 
-  // Navigation items
+  // Get current location to determine active link
+  const location = window.location.pathname;
+
+  // Navigation items - now used in the JSX
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Mango Types", path: "/mango-types" },
@@ -54,53 +59,64 @@ const Navbar = () => {
     { name: "Contact", path: "/contact" }
   ];
 
+  // Use totalItems for cart badge
+  const { totalItems } = useCart();
+  
   return (
-    <nav 
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled 
-          ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-lg py-2" 
-          : "bg-white dark:bg-gray-900 py-4"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
+    <nav className={`fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 shadow-md transition-colors duration-300 ${scrolled ? 'shadow-lg' : ''}`}>
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <a href="/" className="text-2xl font-bold text-green-700 dark:text-green-500 flex items-center transition-colors duration-300">
-              <span className="mr-2 transform hover:scale-110 transition-transform duration-200">🥭</span>
-              <span className="bg-gradient-to-r from-green-600 to-green-400 dark:from-green-500 dark:to-green-300 bg-clip-text text-transparent">
-                MangoStore
-              </span>
-            </a>
-          </div>
-
-          {/* Desktop Nav Links */}
-          <div className="hidden md:flex space-x-1">
-            {navItems.map((item, index) => (
-              <a
-                key={index}
-                href={item.path}
-                className="px-4 py-2 rounded-md text-gray-700 dark:text-gray-200 font-medium relative group transition-colors duration-300"
+          <Link to="/" className="flex items-center">
+            <img src="/logo.png" alt="Mango Store" className="h-10 w-auto" />
+            <span className="ml-2 text-xl font-bold text-yellow-600 dark:text-yellow-500">Mango Store</span>
+          </Link>
+          
+          {/* Navigation Links */}
+          <div className="hidden md:flex space-x-8">
+            {navItems.map((item) => (
+              <Link 
+                key={item.name}
+                to={item.path} 
+                className={`relative text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-500 transition-colors duration-300 py-2 ${
+                  location === item.path ? 'text-yellow-500 font-medium' : ''
+                }`}
               >
-                <span className="relative z-10">{item.name}</span>
-                <span className="absolute bottom-0 left-0 w-0 h-1 bg-green-500 group-hover:w-full transition-all duration-300 rounded"></span>
-              </a>
+                {item.name}
+                {location === item.path && (
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300"></span>
+                )}
+              </Link>
             ))}
           </div>
-
+          
           {/* Light/Dark Toggle */}
-          <button 
-            onClick={toggleDarkMode} 
-            className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300"
-            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-            aria-pressed={darkMode}
-          >
-            {darkMode ? (
-              <span className="text-xl">🌙</span>
-            ) : (
-              <span className="text-xl">☀️</span>
-            )}
-          </button>
+          <div className="flex items-center space-x-4">
+            {/* Cart Icon with Badge */}
+            <Link to="/cart" className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-500">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-yellow-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+            
+            <button 
+              onClick={toggleDarkMode} 
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300"
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              aria-pressed={darkMode}
+            >
+              {darkMode ? (
+                <span className="text-xl">🌙</span>
+              ) : (
+                <span className="text-xl">☀️</span>
+              )}
+            </button>
+          </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
@@ -127,25 +143,27 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu, show/hide based on menu state */}
-      <div 
-        className={`md:hidden transition-all duration-300 ease-in-out ${
-          isOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
-        }`}
-      >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-800 shadow-lg rounded-b-lg transition-colors duration-300">
-          {navItems.map((item, index) => (
-            <a
-              key={index}
-              href={item.path}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300"
-              onClick={toggleMenu}
-            >
-              {item.name}
-            </a>
-          ))}
+      {/* Mobile Menu - Add this section */}
+      {isOpen && (
+        <div className="md:hidden bg-white dark:bg-gray-900 shadow-lg">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  location === item.path 
+                    ? 'text-yellow-500 bg-yellow-50 dark:bg-gray-800' 
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-yellow-500'
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 };

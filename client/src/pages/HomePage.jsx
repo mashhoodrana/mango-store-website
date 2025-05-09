@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion';
 import heroImage from '../assets/hero-mango-removebg-preview.png';
+import specialOfferImage from '../assets/special_offer.jpg';
+import { useCart } from '../context/CartContext';
 
 
 const Home = () => {
@@ -146,32 +149,43 @@ const Home = () => {
   const featuredMangoes = [
     {
       id: 1,
-      name: "Alphonso",
-      description: "The king of mangoes, known for its rich, creamy, saffron-colored flesh.",
-      image: "/assets/alphonso.jpg",
+      name: "Sindhri",
+      description: "Known as the \"King of Mangoes\" in Pakistan, Sindhri is renowned for its rich, sweet flavor and distinctive aroma.",
+      image: specialOfferImage, // Use imported image
       price: "$5.99"
     },
     {
       id: 2,
-      name: "Honey Gold",
-      description: "Sweet as honey with a golden flesh and tropical aroma.",
-      image: "/assets/honey-gold.jpg",
+      name: "Chaunsa",
+      description: "Chaunsa mangoes are prized for their exceptional sweetness and aromatic flavor with a smooth, fiber-free pulp.",
+      image: specialOfferImage, // Use imported image
       price: "$4.99"
     },
     {
       id: 3,
-      name: "Kesar",
-      description: "Distinctive saffron color and sweet taste, perfect for desserts.",
-      image: "/assets/kesar.jpg",
+      name: "Langra",
+      description: "Langra mangoes have a distinct taste that combines sweetness with a slight tanginess and fiber-free, aromatic flesh.",
+      image: specialOfferImage, // Use imported image
       price: "$6.49"
     }
   ];
+  
+  // Add to cart function
+  const { addItem } = useCart();
+  
+  // Add to cart function
+  const handleAddToCart = (product) => {
+    addItem(product);
+    
+    // Show a temporary success message
+    alert(`${product.name} added to your cart!`);
+  };
   
   // Seasonal special
   const seasonalSpecial = {
     name: "Summer Mango Box",
     description: "Limited edition box with a selection of our premium seasonal mangoes. Perfect for gifting or treating yourself to a tropical delight.",
-    image: "/assets/mango-box.jpg",
+    image: specialOfferImage,
     price: "$24.99",
     features: [
       "6 Premium Mangoes",
@@ -193,7 +207,7 @@ const Home = () => {
       id: 2,
       icon: "🚚",
       title: "Fast Delivery",
-      description: "We deliver fresh mangoes to your doorstep within 24 hours of harvesting."
+      description: "We deliver fresh mangoes to your doorstep within 24-48 hours of harvesting."
     },
     {
       id: 3,
@@ -429,15 +443,15 @@ const Home = () => {
         initial="hidden"
         animate={seasonalControls}
         variants={staggerChildren}
-        className="py-20 bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300 overflow-hidden"
+        className="py-16 bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300 overflow-hidden"
       >
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div 
-            className="flex flex-col md:flex-row items-center gap-10"
+            className="flex flex-col md:flex-row items-center gap-6 md:gap-10"
             variants={fadeInUp}
           >
             <motion.div 
-              className="md:w-1/2 relative"
+              className="md:w-1/2 w-full relative mb-8 md:mb-0"
               variants={slideIn}
             >
               <motion.div
@@ -453,10 +467,10 @@ const Home = () => {
                 <motion.img 
                   src={seasonalSpecial.image} 
                   alt={seasonalSpecial.name}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover max-h-[400px]"
                 />
                 <motion.div
-                  className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full font-bold z-20 shadow-lg"
+                  className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full font-bold z-20 shadow-lg text-sm sm:text-base"
                   animate={{ 
                     scale: [1, 1.1, 1],
                     rotate: [0, -5, 0, 5, 0],
@@ -471,9 +485,9 @@ const Home = () => {
                 </motion.div>
               </motion.div>
               
-              {/* Decorative elements */}
+              {/* Decorative elements - hidden on mobile */}
               <motion.div
-                className="absolute -bottom-10 -left-10 w-40 h-40 bg-yellow-300 rounded-full opacity-20 z-0"
+                className="absolute -bottom-10 -left-10 w-40 h-40 bg-yellow-300 rounded-full opacity-20 z-0 hidden md:block"
                 animate={{ 
                   scale: [1, 1.2, 1],
                   x: [0, 10, 0],
@@ -487,29 +501,29 @@ const Home = () => {
             </motion.div>
             
             <motion.div 
-              className="md:w-1/2"
+              className="md:w-1/2 w-full"
               variants={slideInRight}
             >
               <motion.div
-                className="inline-block px-4 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full mb-4 font-medium"
+                className="inline-block px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full mb-3 md:mb-4 font-medium text-sm"
                 whileHover={{ scale: 1.05 }}
               >
                 Seasonal Special
               </motion.div>
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">{seasonalSpecial.name}</h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">{seasonalSpecial.description}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 md:mb-6">{seasonalSpecial.name}</h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-4 md:mb-8">{seasonalSpecial.description}</p>
               
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2 mb-4 md:mb-8">
                 {seasonalSpecial.features.map((feature, index) => (
                   <motion.li 
                     key={index}
-                    className="flex items-center text-gray-700 dark:text-gray-300"
+                    className="flex items-center text-gray-700 dark:text-gray-300 text-sm sm:text-base"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.2 + 0.5 }}
                   >
                     <motion.span 
-                      className="mr-3 text-yellow-500"
+                      className="mr-2 text-yellow-500"
                       animate={{ 
                         scale: [1, 1.2, 1],
                       }}
@@ -527,16 +541,17 @@ const Home = () => {
                 ))}
               </ul>
               
-              <div className="flex items-center mb-8">
-                <span className="text-3xl font-bold text-gray-900 dark:text-white">{seasonalSpecial.price}</span>
-                <span className="ml-3 text-lg text-gray-500 dark:text-gray-400 line-through">$34.99</span>
-                <span className="ml-3 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 px-2 py-1 rounded text-sm font-medium">Save $10</span>
+              <div className="flex flex-wrap items-center mb-4 md:mb-8">
+                <span className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{seasonalSpecial.price}</span>
+                <span className="ml-2 sm:ml-3 text-sm sm:text-base md:text-lg text-gray-500 dark:text-gray-400 line-through">$34.99</span>
+                <span className="ml-2 sm:ml-3 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 px-2 py-1 rounded text-xs sm:text-sm font-medium">Save $10</span>
               </div>
               
               <motion.button 
-                className="px-8 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 w-full md:w-auto"
+                className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 w-full md:w-auto"
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => handleAddToCart(seasonalSpecial)}
               >
                 Add to Cart
               </motion.button>
@@ -607,16 +622,15 @@ const Home = () => {
           </div>
           
           <motion.div 
-            className="text-center mt-16"
-            variants={fadeInUp}
-          >
-            <motion.button 
-              className="px-8 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 border border-gray-200 dark:border-gray-600"
-              whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+            className="text-center mt-10">
+            <motion.a
+              href="/mango-types"
+              className="inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition duration-300"
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               View All Mangoes
-            </motion.button>
+            </motion.a>
           </motion.div>
         </div>
       </motion.section>
@@ -627,7 +641,7 @@ const Home = () => {
         initial="hidden"
         animate={benefitsControls}
         variants={staggerChildren}
-        className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300 relative overflow-hidden"
+        className="py-16 sm:py-20 bg-white dark:bg-gray-900 transition-colors duration-300 relative overflow-hidden"
       >
         {/* Decorative background elements */}
         <motion.div 
@@ -655,19 +669,19 @@ const Home = () => {
           }}
         ></motion.div>
         
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div 
-            className="text-center mb-16"
+            className="text-center mb-10 sm:mb-16"
             variants={fadeInUp}
           >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white">Why Choose Us</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Why Choose Us</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto mt-4"></div>
-            <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               We're committed to providing the best mango experience with quality, freshness, and exceptional service.
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-10">
             {benefits.map((benefit, index) => (
               <motion.div 
                 key={benefit.id}
@@ -677,10 +691,10 @@ const Home = () => {
                   y: -10,
                   boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                 }}
-                className="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-lg transition-all duration-300 hover:shadow-2xl border border-gray-100 dark:border-gray-700"
+                className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 sm:p-8 shadow-lg transition-all duration-300 hover:shadow-2xl border border-gray-100 dark:border-gray-700"
               >
                 <motion.div 
-                  className="text-5xl mb-6"
+                  className="text-4xl sm:text-5xl mb-4 sm:mb-6"
                   animate={{ 
                     scale: [1, 1.2, 1],
                     rotate: [0, 10, 0, -10, 0],
@@ -694,8 +708,8 @@ const Home = () => {
                 >
                   {benefit.icon}
                 </motion.div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{benefit.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{benefit.description}</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">{benefit.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
@@ -833,60 +847,7 @@ const Home = () => {
         </div>
       </motion.section>
       
-      {/* Benefits Section */}
-      <motion.section 
-        ref={benefitsRef}
-        initial="hidden"
-        animate={benefitsControls}
-        variants={staggerChildren}
-        className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300"
-      >
-        <div className="container mx-auto px-6">
-          <motion.div 
-            className="text-center mb-16"
-            variants={fadeInUp}
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white">Why Choose Us</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto mt-4"></div>
-            <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              We're committed to providing the best mango experience from farm to table.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {benefits.map((benefit, index) => (
-              <motion.div 
-                key={benefit.id}
-                variants={rotateIn}
-                custom={index}
-                whileHover={{ 
-                  y: -10,
-                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-                }}
-                className="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 p-8 text-center"
-              >
-                <motion.div 
-                  className="w-20 h-20 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center text-4xl mx-auto mb-6"
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 5, 0, -5, 0],
-                  }}
-                  transition={{ 
-                    duration: 5, 
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    delay: index * 0.2
-                  }}
-                >
-                  {benefit.icon}
-                </motion.div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">{benefit.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{benefit.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
+      {/* Benefits Section (Duplicate - Removed) */}
       
       {/* CTA Section */}
       <motion.section 
