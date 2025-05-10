@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   // Initialize darkMode from localStorage or default to false
@@ -10,6 +10,14 @@ const Navbar = () => {
     const savedMode = localStorage.getItem("darkMode");
     return savedMode ? JSON.parse(savedMode) : false;
   });
+
+  // Use React Router's useLocation hook
+  const location = useLocation();
+
+  // Scroll to top when location changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   // Handle scroll effect
   useEffect(() => {
@@ -48,9 +56,6 @@ const Navbar = () => {
     setIsOpen(prevState => !prevState);
   }, []);
 
-  // Get current location to determine active link
-  const location = window.location.pathname;
-
   // Navigation items - now used in the JSX
   const navItems = [
     { name: "Home", path: "/" },
@@ -61,6 +66,9 @@ const Navbar = () => {
 
   // Use totalItems for cart badge
   const { totalItems } = useCart();
+  
+  // Get current path
+  const currentPath = location.pathname;
   
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 shadow-md transition-colors duration-300 ${scrolled ? 'shadow-lg' : ''}`}>
@@ -122,7 +130,7 @@ const Navbar = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-300"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-200 hover:text-yellow-600 dark:hover:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-300"
               aria-expanded={isOpen}
               aria-label="Toggle menu"
             >

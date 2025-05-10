@@ -128,73 +128,41 @@ function MangoTypes() {
   ];
 
   return (
-    <motion.section 
-      className="pt-20 pb-16 bg-gradient-to-b from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300 min-h-screen w-full overflow-x-hidden"
-      initial="initial"
-      animate="in"
-      exit="exit"
-      variants={pageVariants}
-      transition={pageTransition}
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div className="pt-20 pb-16 bg-gradient-to-b from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300 min-h-screen w-full">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
-        <motion.div 
-          ref={headerRef}
-          initial="hidden"
-          animate={headerControls}
-          variants={fadeInUp}
-          className="text-center mb-12 mt-4"
-        >
-          <motion.div
-            className="inline-block px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full mb-3 font-medium text-sm"
-            whileHover={{ scale: 1.05 }}
-          >
+        <div className="text-center mb-8 mt-4">
+          <div className="inline-block px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full mb-3 font-medium text-sm">
             Explore Varieties
-          </motion.div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Our Premium Mango Collection
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto mb-6"></div>
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto mb-4"></div>
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-2">
             Discover our handpicked selection of the finest mangoes from around the world, 
             each with its unique flavor profile and characteristics.
           </p>
-        </motion.div>
+        </div>
         
         {/* Mango Cards Grid */}
-        <motion.div 
-          ref={cardsRef}
-          initial="hidden"
-          animate={cardsControls}
-          variants={staggerChildren}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 px-2 sm:px-0">
           {mangoVarieties.map((mango, index) => (
-            <motion.div 
-              key={index} 
-              variants={fadeInScale}
-              whileHover={{ 
-                y: -10,
-                boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-              }}
-              transition={{ duration: 0.3 }}
+            <div 
+              key={index}
               className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg transition-all duration-300"
             >
               <div className="relative overflow-hidden group">
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 opacity-50 group-hover:opacity-70 transition-opacity duration-300"
-                ></motion.div>
-                <motion.img 
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+                <img 
                   src={mango.image} 
                   alt={mango.name}
                   className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
                 />
-                <motion.div
-                  className="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-full font-bold z-20 shadow-lg text-sm"
-                  whileHover={{ scale: 1.1 }}
-                >
+                <div className="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-full font-bold z-20 shadow-lg text-sm">
                   Premium
-                </motion.div>
+                </div>
               </div>
               
               <div className="p-6">
@@ -223,11 +191,11 @@ function MangoTypes() {
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </div>
   );
 }
 
