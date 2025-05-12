@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs');
+const User = require('./models/userModel');
 const Product = require('./models/productModel');
 
 // Load environment variables
@@ -9,6 +11,26 @@ dotenv.config();
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected for seeding'))
   .catch(err => console.error('MongoDB connection error:', err));
+
+// Sample users
+const users = [
+  {
+    name: 'Admin User',
+    email: 'admin@example.com',
+    password: bcrypt.hashSync('123456', 10),
+    isAdmin: true,
+  },
+  {
+    name: 'John Doe',
+    email: 'john@example.com',
+    password: bcrypt.hashSync('123456', 10),
+  },
+  {
+    name: 'Jane Doe',
+    email: 'jane@example.com',
+    password: bcrypt.hashSync('123456', 10),
+  },
+];
 
 // Sample mango products
 const mangoProducts = [
@@ -83,9 +105,14 @@ const mangoProducts = [
 const importData = async () => {
   try {
     // Clear existing data
+    await User.deleteMany();
     await Product.deleteMany();
     
-    // Insert new data
+    // Insert users
+    const createdUsers = await User.insertMany(users);
+    const adminUser = createdUsers[0]._id;
+    
+    // Insert products
     await Product.insertMany(mangoProducts);
     
     console.log('Data imported successfully!');
@@ -99,6 +126,7 @@ const importData = async () => {
 // Delete all data function
 const destroyData = async () => {
   try {
+    await User.deleteMany();
     await Product.deleteMany();
     
     console.log('Data destroyed successfully!');

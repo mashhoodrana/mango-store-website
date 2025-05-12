@@ -5,17 +5,45 @@ const {
   getProductById, 
   createProduct, 
   updateProduct, 
-  deleteProduct 
+  deleteProduct,
+  uploadProductImage,
+  updateProductInventory,
+  bulkUpdateProducts,
 } = require('../controllers/productController');
+const {
+  createProductReview,
+  getProductReviews,
+} = require('../controllers/reviewController');
+const { getRelatedProducts } = require('../controllers/recommendationController');
+const { protect, admin } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
-// Routes
+// Product routes
 router.route('/')
   .get(getProducts)
-  .post(createProduct);
+  .post(protect, admin, createProduct);
+
+router.route('/bulk')
+  .put(protect, admin, bulkUpdateProducts);
 
 router.route('/:id')
   .get(getProductById)
-  .put(updateProduct)
-  .delete(deleteProduct);
+  .put(protect, admin, updateProduct)
+  .delete(protect, admin, deleteProduct);
 
+router.route('/:id/inventory')
+  .put(protect, admin, updateProductInventory);
+
+// Review routes
+router.route('/:id/reviews')
+  .get(getProductReviews)
+  .post(protect, createProductReview);
+
+// Related products route
+router.route('/:id/related')
+  .get(getRelatedProducts);
+
+// Add image upload route
+// Upload product image
+router.post('/upload', protect, admin, upload.single('image'), uploadProductImage);
 module.exports = router;
