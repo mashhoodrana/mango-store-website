@@ -20,7 +20,3 @@ An elegant full-stack e-commerce website that allows users across Pakistan to or
 
 📧 Contact
 For questions, feedback, or business inquiries:
-
-Muhammad Mashhood Rana
-📧 themashhoodrana@gmail.com
-📞 +92 307 9919110
